@@ -7,8 +7,8 @@ Usage: sysopctl [command] [options]
 
 Commands:
   service list               List all active services
-  service start <name>       Start a specified service
-  service stop <name>        Stop a specified service
+  service start <name>       Start the specified service
+  service stop <name>        Stop the specified service
   system load                Show current system load averages
   disk usage                 Show disk usage statistics by partition
   process monitor            Monitor system processes in real-time
@@ -37,14 +37,14 @@ function list_services() {
 function start_service() {
     echo "Starting service: $1..."
     systemctl start "$1"
-    echo "Service $1 started."
+    echo "Service $1 started successfully."
 }
 
 # Stop a specified service
 function stop_service() {
     echo "Stopping service: $1..."
     systemctl stop "$1"
-    echo "Service $1 stopped."
+    echo "Service $1 stopped successfully."
 }
 
 # Show current system load averages
@@ -92,10 +92,18 @@ case "$1" in
                 list_services
                 ;;
             start)
-                start_service "$3"
+                if [ -n "$3" ]; then
+                    start_service "$3"
+                else
+                    echo "Please specify a service name to start."
+                fi
                 ;;
             stop)
-                stop_service "$3"
+                if [ -n "$3" ]; then
+                    stop_service "$3"
+                else
+                    echo "Please specify a service name to stop."
+                fi
                 ;;
             *)
                 echo "Invalid service command. Use --help for guidance."
